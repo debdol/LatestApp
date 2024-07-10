@@ -1,7 +1,8 @@
 import { SHOW_ERROR, SHOW_PRODUCT } from "./Constant"
-import { fetchApiData } from "../Functions/Functions"
+import { fetchApiData, fetchSearchApi } from "../Functions/Functions"
 
 export const getApiData = () => {
+    // console.log("getApiData_is_called:");
     return async (dispatch) => {
         const tempApiData = fetchApiData()
             .then((response) => {
@@ -11,10 +12,35 @@ export const getApiData = () => {
                 })
             })
             .catch((error) => {
+                // console.log("error_in_search_api:", error);
                 dispatch({
                     type: SHOW_ERROR,
                     payload: error
                 })
+            })
+    }
+}
+
+export const getSearchApi = () => {
+    console.log("getSearchApi_is_called:");
+    return async (dispatch) => {
+        const tempSearchApiData = fetchSearchApi()
+            .then((response) => {
+                console.log("response_in_search_api:", response.data);
+                if (response.data) {
+                    dispatch({
+                        type: SHOW_PRODUCT,
+                        payload: response.data
+                    })
+                }
+            })
+            .catch((error) => {
+                console.log("error_in_search_api:", error);
+                dispatch({
+                    type: SHOW_ERROR,
+                    payload: error
+                })
+
             })
     }
 }

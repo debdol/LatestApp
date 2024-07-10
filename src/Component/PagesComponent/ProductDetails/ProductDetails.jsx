@@ -2,14 +2,17 @@ import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image, Dimensions }
 import React, { useState } from 'react'
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
+import Swiper from 'react-native-deck-swiper';
 const { height, width } = Dimensions.get('window');
 
 const ProductDetails = ({ navigation, route }) => {
     let data = route.params.details;
+    console.log("image_in_productdetails:", data.image1, data.image2, data.image3)
     const [currentIndex, setCurrentIndex] = useState(0);
     const productImages = [
-        data.image,
-        data.image
+        data.image1,
+        data.image2,
+        data.image3,
     ]
     return (
         <View style={styles.mainContainer}>
@@ -26,12 +29,9 @@ const ProductDetails = ({ navigation, route }) => {
                 <Text></Text>
             </LinearGradient>
             <View style={styles.body}>
-                <View style={styles.sliderMainView}>
+                {/* <View style={styles.sliderMainView}>
                     <FlatList
-                        style={{
-                            flexGrow: 0,
-                        }}
-                        contentContainerStyle={{ alignItems: "center" }}
+                        contentContainerStyle={{ alignItems: "center" ,borderWidth:1}}
                         data={productImages}
                         horizontal
                         pagingEnabled
@@ -43,11 +43,9 @@ const ProductDetails = ({ navigation, route }) => {
                         }}
                         renderItem={({ item, index }) => {
                             return (
-                                <View style={styles.sliderView}>
-                                    <TouchableOpacity style={styles.sliderBtn} disabled={true}>
-                                        <Image source={{ uri: item }} style={[styles.sliderBtn, styles.imageStyle]} />
-                                    </TouchableOpacity>
-                                </View>
+                                <TouchableOpacity style={styles.sliderBtn} disabled={true}>
+                                    <Image source={{ uri: item }} style={[styles.sliderBtn, styles.imageStyle]} />
+                                </TouchableOpacity>
                             )
                         }}
                     />
@@ -67,6 +65,28 @@ const ProductDetails = ({ navigation, route }) => {
                             })
                         }
                     </View>
+                </View> */}
+                <View style={styles.container}>
+                    <Swiper
+                        cards={['DO', 'MORE', 'OF', 'WHAT', 'MAKES', 'YOU', 'HAPPY']}
+                        renderCard={(card) => {
+                            return (
+                                <View style={styles.card}>
+                                    <Text style={styles.text}>{card}</Text>
+                                </View>
+                            )
+                        }}
+                        onSwiped={(cardIndex) => { console.log(cardIndex) }}
+                        onSwipedAll={() => { console.log('onSwipedAll') }}
+                        cardIndex={0}
+                        backgroundColor={'#4FD0E9'}
+                        stackSize={3}>
+                        {/* <Button
+                            onPress={() => { console.log('oulala') }}
+                            title="Press me">
+                            You can press me
+                        </Button> */}
+                    </Swiper>
                 </View>
                 <View style={styles.sliderBottiomView}>
                     <View style={styles.productNameMainView}>
@@ -108,9 +128,9 @@ const ProductDetails = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
     mainContainer: {
+        flex: 1,
         flexDirection: "column",
         alignItems: "center",
-        flex: 1,
         width: "100%",
     },
 
@@ -139,7 +159,6 @@ const styles = StyleSheet.create({
     body: {
         flex: 1,
         flexDirection: "column",
-        gap: 10,
         backgroundColor: "white",
     },
 
@@ -149,27 +168,21 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         gap: 10,
-    },
-
-    sliderView: {
-        height: height / 2,
-        width: width,
-        padding: 19,
-        justifyContent: 'center',
-        alignItems: 'center',
+        // borderWidth:1,
     },
 
     sliderBtn: {
-        width: "100%",
-        height: "100%",
+        height: height / 2,
+        width: width,
+        // padding:10,
         justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 9,
+        // alignItems: 'center',
+        // borderRadius: 9,
     },
 
     imageStyle: {
         borderRadius: 9,
-        objectFit: 'fill',
+        // objectFit: 'content',
     },
 
     sliderDotMainView: {
@@ -244,6 +257,25 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         gap: 10
+    },
+
+
+    container: {
+        flex: 1,
+        backgroundColor: "#F5FCFF"
+    },
+    card: {
+        flex: 1,
+        borderRadius: 4,
+        borderWidth: 2,
+        borderColor: "#E8E8E8",
+        justifyContent: "center",
+        backgroundColor: "white"
+    },
+    text: {
+        textAlign: "center",
+        fontSize: 50,
+        backgroundColor: "transparent"
     }
 })
 export default ProductDetails

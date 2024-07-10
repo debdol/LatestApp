@@ -1,37 +1,24 @@
-import { StyleSheet, Keyboard, Text } from 'react-native'
+import { StyleSheet, Keyboard } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import LinearGradient from 'react-native-linear-gradient'
+import LinearGradient from 'react-native-linear-gradient';
 import { Searchbar } from 'react-native-paper';
+import { getSearchApi } from '../../../Redux/Action';
+import { useDispatch } from 'react-redux';
 
 const Header = () => {
+    const dispatch = useDispatch();
     const [searchQuery, setSearchQuery] = useState('');
     const [keyboardStatus, setKeyboardStatus] = useState('');
     const [inputLoader, setInputLoader] = useState(false);
-    const searchProduct = () => {
-        console.log("search");
-        // setSearchQuery('');
-    }
+
     useEffect(() => {
         if (searchQuery) {
             setInputLoader(true);
-            console.log("in the if condition:", Boolean(searchQuery))
-            searchProduct();
+            dispatch(getSearchApi())
         } else {
             setInputLoader(false);
         }
-    }, [searchQuery])
-    // useEffect(() => {
-    //     const showSubscription = Keyboard.addListener('keyboardDidShow', () => {
-    //         setKeyboardStatus('Keyboard Shown');
-    //     });
-    //     const hideSubscription = Keyboard.addListener('keyboardDidHide', () => {
-    //         setKeyboardStatus('Keyboard Hidden');
-    //         if (searchQuery) {
-    //             console.log("in the if condition:", Boolean(searchQuery))
-    //             searchProduct();
-    //         }
-    //     });
-    // }, []);
+    }, [searchQuery]);
 
     return (
         <LinearGradient
@@ -46,6 +33,8 @@ const Header = () => {
                 onChangeText={setSearchQuery}
                 value={searchQuery}
                 loading={inputLoader ? true : false}
+                onSubmitEditing={Keyboard.dismiss}
+                placeholderTextColor={'black'}
             />
         </LinearGradient>
     )
@@ -55,7 +44,6 @@ const Header = () => {
 const styles = StyleSheet.create({
     container: {
         padding: 10,
-        elevation: 8,
     },
     inputStyle: {
         borderWidth: 2,

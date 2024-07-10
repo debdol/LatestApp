@@ -1,15 +1,16 @@
 import { StyleSheet, View, Dimensions } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import LoaderKit from 'react-native-loader-kit'
-const { height, width } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
 const Loader = () => {
+    useEffect(() => { console.log("loader_is_mounted") }, [])
     return (
         <View style={styles.mainContainer}>
             <LoaderKit
                 style={styles.loader}
-                name={'BallClipRotateMultiple'} // Optional: see list of animations below
-                color={'green'} // Optional: color can be: 'red', 'green',... or '#ddd', '#ffffff',...
+                name={'BallClipRotateMultiple'}
+                color={'#88dae0'}
             />
 
         </View>
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         width: "100%",
-        height:height,
+        height: height,
         alignItems: "center"
     },
     loader: {
