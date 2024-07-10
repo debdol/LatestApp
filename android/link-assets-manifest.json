@@ -1,0 +1,25 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/Fonts/Amita-Bold.ttf",
+      "sha1": "e2b3657609f6e6a7ad6b2ffc8304776c6ce7fb2d"
+    },
+    {
+      "path": "src/assets/Fonts/Amita-Regular.ttf",
+      "sha1": "8abb63971b097f35e50ddcdca13c867cb77b29fe"
+    },
+    {
+      "path": "src/assets/Fonts/MontserratAlternates-Bold.ttf",
+      "sha1": "ee2c78fd0af8aa895f15a93f9a61e13a960c17f3"
+    },
+    {
+      "path": "src/assets/Fonts/MontserratAlternates-Regular.ttf",
+      "sha1": "8a441a013bb65edb42d747efc85caba6d4149464"
+    },
+    {
+      "path": "src/assets/Fonts/MontserratAlternates-Thin.ttf",
+      "sha1": "b54b998a0b11a533084557908847be001e42c534"
+    }
+  ]
+}
