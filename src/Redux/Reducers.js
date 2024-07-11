@@ -1,4 +1,4 @@
-import { SHOW_ERROR, SHOW_PRODUCT } from "./Constant";
+import { SEARCH_DATA, SHOW_ERROR, SHOW_PRODUCT } from "./Constant";
 
 
 const apiInitialState = [{
@@ -18,6 +18,13 @@ export const getApiDataReducer = (state = apiInitialState, action) => {
             loading: false,
             error: action.payload
         }];
+        default: return state
+    }
+}
+
+export const getSearchedDataReducer = (state = [], action) => {
+    switch (action.type) {
+        case SEARCH_DATA: return action.payload;
         default: return state
     }
 }

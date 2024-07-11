@@ -1,7 +1,6 @@
-import { FlatList, StyleSheet, Text, View, Modal, Alert, TouchableOpacity } from 'react-native'
+import { FlatList, StyleSheet, View, } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import LinearGradient from 'react-native-linear-gradient'
 
 import { getApiData } from '../../../Redux/Action';
 import Header from '../../CustomComponents/Header/Header';
@@ -12,7 +11,6 @@ import CategoryList from '../../CustomComponents/CategoryList/CategoryList';
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const apiData = useSelector((state) => state.getApiDataReducer) || [];
-  const [modalVisible, setModalVisible] = useState(true);
   const [productData, setProductData] = useState([])
 
   useEffect(() => {
@@ -20,16 +18,13 @@ const Home = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    console.log("apiData.data:", apiData);
     if (apiData[0].data) {
-      console.log("apidataLength:", apiData[0].data);
       setProductData(apiData[0].data)
     }
-  }, [apiData])
-
+  }, [apiData]);
   return (
     <View style={{ flex: 1 }}>
-      <Header />
+      <Header navigation={navigation} />
       <FlatList
         data={[1, 1]}
         renderItem={({ item, index }) => {
@@ -49,9 +44,8 @@ const Home = ({ navigation }) => {
                       data={productData}
                       renderItem={({ item, index }) =>
                         <ProductList item={item} index={item.id} navigation={navigation} />
-                        // console.log("item:", item)
                       }
-                      keyExtractor={(item) => item.id.toString()}
+                      keyExtractor={(item, index) => item.id}
                       showsVerticalScrollIndicator={false}
                     /> :
                     <Loader />
@@ -74,48 +68,6 @@ const styles = StyleSheet.create({
   },
   productList: {
     width: "100%",
-  },
-  // ...........................Modal Style........................................
-  centeredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: 'white',
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    backgroundColor: "rgba(0, 71, 67, 0.7)",
-    height: 40,
-    width: 100,
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: '#F194FF',
-  },
-  modalText: {
-    marginBottom: 15,
-    textAlign: 'center',
-    color: "black"
-  },
-  textStyle: {
-    color: 'Black',
-    textAlign: 'center',
   },
 })
 export default Home

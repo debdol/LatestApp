@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
-import { getApiDataReducer } from "./Reducers";
+import { getApiDataReducer, getSearchedDataReducer } from "./Reducers";
 export const rootReducer = combineReducers({
-    getApiDataReducer
+    getApiDataReducer,
+    getSearchedDataReducer
 })

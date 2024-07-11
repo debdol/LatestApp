@@ -19,8 +19,6 @@ const App = () => {
 
   useEffect(() => {
     const networkStatuds = NetInfo.addEventListener(state => {
-      // console.log("Connection type", state.type);
-      // console.log("Is connected?", state.isConnected);
       if (state.isConnected) {
         setCunnectionStatus(true)
       }
@@ -28,7 +26,7 @@ const App = () => {
 
     return () => {
       networkStatuds();
-    };
+    }
   }, []);
 
   return (

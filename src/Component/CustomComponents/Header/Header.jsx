@@ -1,24 +1,11 @@
-import { StyleSheet, Keyboard } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { StyleSheet } from 'react-native'
+import React, { useState } from 'react'
 import LinearGradient from 'react-native-linear-gradient';
 import { Searchbar } from 'react-native-paper';
-import { getSearchApi } from '../../../Redux/Action';
-import { useDispatch } from 'react-redux';
 
-const Header = () => {
-    const dispatch = useDispatch();
+const Header = ({ item, index, navigation }) => {
     const [searchQuery, setSearchQuery] = useState('');
-    const [keyboardStatus, setKeyboardStatus] = useState('');
-    const [inputLoader, setInputLoader] = useState(false);
 
-    useEffect(() => {
-        if (searchQuery) {
-            setInputLoader(true);
-            dispatch(getSearchApi())
-        } else {
-            setInputLoader(false);
-        }
-    }, [searchQuery]);
 
     return (
         <LinearGradient
@@ -29,12 +16,11 @@ const Header = () => {
         >
             <Searchbar
                 style={styles.inputStyle}
-                placeholder="Search Scalenow's Product...."
+                placeholder="Search Product's name ...."
                 onChangeText={setSearchQuery}
                 value={searchQuery}
-                loading={inputLoader ? true : false}
-                onSubmitEditing={Keyboard.dismiss}
                 placeholderTextColor={'black'}
+                onFocus={() => navigation.navigate('SearchedProductPage')}
             />
         </LinearGradient>
     )

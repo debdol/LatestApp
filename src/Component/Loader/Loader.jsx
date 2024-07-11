@@ -4,7 +4,6 @@ import LoaderKit from 'react-native-loader-kit'
 const { height } = Dimensions.get('window');
 
 const Loader = () => {
-    useEffect(() => { console.log("loader_is_mounted") }, [])
     return (
         <View style={styles.mainContainer}>
             <LoaderKit

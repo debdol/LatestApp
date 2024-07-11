@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image, Dimensions } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Image, Dimensions, ActivityIndicator } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import AntDesign from 'react-native-vector-icons/dist/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 import Swiper from 'react-native-deck-swiper';
@@ -7,13 +7,30 @@ const { height, width } = Dimensions.get('window');
 
 const ProductDetails = ({ navigation, route }) => {
     let data = route.params.details;
-    console.log("image_in_productdetails:", data.image1, data.image2, data.image3)
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [decreasePrice, setDecreasePrice] = useState(null);
+    const [increasePrice, setIncreasePrice] = useState(null);
     const productImages = [
         data.image1,
         data.image2,
         data.image3,
-    ]
+    ];
+    const percentageCalulation = (oldPrices, newPrices) => {
+        const oldPrice = Number(oldPrices);
+        const newPrice = Number(newPrices);
+        if (oldPrice > newPrice) {
+            const percentageDecrease = parseInt(((oldPrice - newPrice) / oldPrice) * 100);
+            setDecreasePrice(percentageDecrease);
+        } else {
+            const percentageIncrease = parseInt(((newPrice - oldPrice) / newPrice) * 100);
+            setIncreasePrice(percentageIncrease);
+        }
+    };
+    useEffect(() => {
+        if (data) {
+            percentageCalulation(data.previous_price, data.price);
+        }
+    }, [data]);
+
     return (
         <View style={styles.mainContainer}>
             <LinearGradient
@@ -23,9 +40,9 @@ const ProductDetails = ({ navigation, route }) => {
                 style={styles.headingView}
             >
                 <TouchableOpacity onPress={() => navigation.goBack()} >
-                    <AntDesign name='left' style={styles.icon} size={23} />
+                    <AntDesign name='left' style={styles.textColor} size={23} />
                 </TouchableOpacity>
-                <Text style={[styles.txt, styles.headingTxt]}>Product Details</Text>
+                <Text style={[styles.txt, styles.headingTxtFont, styles.textColor]}>Product Details</Text>
                 <Text></Text>
             </LinearGradient>
             <View style={styles.body}>
@@ -66,57 +83,74 @@ const ProductDetails = ({ navigation, route }) => {
                         }
                     </View>
                 </View> */}
-                <View style={styles.container}>
+                <View style={styles.sliderMainView}>
                     <Swiper
-                        cards={['DO', 'MORE', 'OF', 'WHAT', 'MAKES', 'YOU', 'HAPPY']}
+                        infinite
+                        cards={productImages}
+                        cardStyle={{
+                            width: '100%',  // 80% of the screen width
+                            height: '100%',  // 60% of the screen height
+                            borderRadius: 10,
+                            overflow: 'hidden',
+                            borderWidth: 2,
+                            borderColor: "white",
+                            position: 'absolute',
+                            top: 0,
+                            left: 0
+                        }}
                         renderCard={(card) => {
                             return (
-                                <View style={styles.card}>
-                                    <Text style={styles.text}>{card}</Text>
-                                </View>
+                                <Image source={{ uri: `${card}?${new Date().getTime()}` }} style={[styles.imageStyle]} PlaceholderContent={<ActivityIndicator />} />
                             )
                         }}
-                        onSwiped={(cardIndex) => { console.log(cardIndex) }}
-                        onSwipedAll={() => { console.log('onSwipedAll') }}
+                        // onSwiped={(cardIndex) => { console.log(cardIndex) }}
+                        // onSwipedAll={() => { console.log('onSwipedAll') }}
                         cardIndex={0}
-                        backgroundColor={'#4FD0E9'}
+                        backgroundColor={"White"}
+                        containerStyle={{
+                            width: width * 0.9,
+                            height: '100%',
+                            width: "100%",
+                        }}
                         stackSize={3}>
-                        {/* <Button
-                            onPress={() => { console.log('oulala') }}
-                            title="Press me">
-                            You can press me
-                        </Button> */}
                     </Swiper>
                 </View>
                 <View style={styles.sliderBottiomView}>
                     <View style={styles.productNameMainView}>
-                        <Text style={[styles.icon, { fontFamily: "MontserratAlternates-Bold" }]}>{data.title}</Text>
+                        <Text style={[styles.textColor, styles.headingTxtFont]}>{data.name}</Text>
                     </View>
                     <View style={styles.desctiptionView}>
                         <View style={styles.priceView}>
-                            <View style={styles.discountView}>
-                                <AntDesign name='arrowdown' size={20} style={{ color: "green" }} />
-                                <Text style={[styles.icon, styles.productDescription, { color: "green", fontWeight: '800' }]}>{data.price}%</Text>
-                            </View>
-                            <Text style={[styles.icon, styles.productDescription]}><Text>₹</Text>{data.price}</Text>
+                            {decreasePrice ?
+                                <View style={styles.discountView}>
+                                    <AntDesign name='arrowdown' size={20} style={styles.greenColorText} />
+                                    <Text style={[styles.productPriceText, styles.greenColorText]}>{decreasePrice}%</Text>
+                                </View> :
+                                <View style={styles.discountView}>
+                                    <AntDesign name='arrowup' size={20} style={styles.greenColorText} />
+                                    <Text style={[styles.productPriceText, styles.greenColorText]}>{increasePrice}%</Text>
+                                </View>
+                            }
+                            <Text style={[styles.productPriceText, { color: "red", textDecorationLine: 'line-through' }]}><Text>₹</Text>{data.previous_price}</Text>
+                            <Text style={[styles.textColor, styles.productPriceText]}><Text>₹</Text>{data.price}</Text>
                         </View>
-                        <Text style={[styles.icon, styles.productTitle]}>Free delivery</Text>
-                        <Text style={[styles.icon, styles.productTitle]}>Buy & pay in easy EMIs with Scalenow Technosolutions pay Later</Text>
+                        <Text style={styles.textColor}>Free delivery</Text>
+                        <Text style={styles.textColor}>Buy & pay in easy EMIs with Scalenow Technosolutions pay Later</Text>
                     </View>
                     <View style={styles.userLocation}>
                         <View style={styles.locationLabel}>
-                            <Text style={[styles.icon, styles.productTitle]}>Deliver to: </Text>
-                            <Text style={[styles.icon, styles.headingTxt]}>Debdol Sarkar</Text>
+                            <Text style={styles.textColor}>Deliver to: </Text>
+                            <Text style={[styles.textColor, styles.headingTxtFont]}>Debdol Sarkar</Text>
                         </View>
-                        <Text style={[styles.icon, styles.productTitle]}>Kolkata, West Bengal, India</Text>
+                        <Text style={styles.textColor}>Kolkata, West Bengal, India</Text>
                     </View>
                     <View style={styles.deliveryEtaView}>
-                        <AntDesign name='car' size={30} style={styles.icon} />
+                        <AntDesign name='car' size={30} style={styles.textColor} />
                         <View style={styles.deliveryEtaLeftView}>
                             <View style={styles.freeDeliveryView}>
-                                <Text style={{ color: "green", fontSize: 20 }}>FREE Delivery</Text>
+                                <Text style={[styles.greenColorText, { fontSize: 20 }]}>FREE Delivery</Text>
                             </View>
-                            <Text style={styles.icon}>15 May,Wednesday</Text>
+                            <Text style={styles.textColor}>15 May,Wednesday</Text>
                         </View>
                     </View>
                 </View>
@@ -127,6 +161,13 @@ const ProductDetails = ({ navigation, route }) => {
 
 
 const styles = StyleSheet.create({
+    textColor: {
+        color: "black"
+    },
+    greenColorText: {
+        color: "green"
+    },
+
     mainContainer: {
         flex: 1,
         flexDirection: "column",
@@ -143,55 +184,53 @@ const styles = StyleSheet.create({
         backgroundColor: "#ffffff",
     },
 
-    icon: {
-        color: "black"
-    },
 
     txt: {
         fontSize: 20,
     },
 
-    headingTxt: {
-        color: "black",
+    headingTxtFont: {
         fontFamily: "MontserratAlternates-Bold"
     },
 
     body: {
         flex: 1,
+        width: "100%",
         flexDirection: "column",
         backgroundColor: "white",
     },
 
     sliderMainView: {
+        width: "100%",
         height: "55%",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: 10,
-        // borderWidth:1,
     },
 
-    sliderBtn: {
-        height: height / 2,
-        width: width,
-        // padding:10,
-        justifyContent: 'center',
-        // alignItems: 'center',
-        // borderRadius: 9,
-    },
+    // sliderBtn: {
+    //     height: '100%',
+    //     width: '100%',
+    //     // padding:10,
+    //     justifyContent: 'center',
+    //     // alignItems: 'center',
+    //     // borderRadius: 9,
+    // },
 
     imageStyle: {
         borderRadius: 9,
-        // objectFit: 'content',
+        height: '100%',
+        width: '100%',
+        resizeMode: "cover"
     },
 
-    sliderDotMainView: {
-        flexDirection: "row",
-        width: width,
-        justifyContent: "center",
-        alignItems: "center",
-        gap: 10,
-    },
+    // sliderDotMainView: {
+    //     flexDirection: "row",
+    //     width: width,
+    //     justifyContent: "center",
+    //     alignItems: "center",
+    //     gap: 10,
+    // },
 
     sliderBottiomView: {
         height: "45%",
@@ -223,7 +262,7 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
 
-    productDescription: {
+    productPriceText: {
         fontFamily: "MontserratAlternates-Regular",
         fontSize: 20,
     },
@@ -258,24 +297,5 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         gap: 10
     },
-
-
-    container: {
-        flex: 1,
-        backgroundColor: "#F5FCFF"
-    },
-    card: {
-        flex: 1,
-        borderRadius: 4,
-        borderWidth: 2,
-        borderColor: "#E8E8E8",
-        justifyContent: "center",
-        backgroundColor: "white"
-    },
-    text: {
-        textAlign: "center",
-        fontSize: 50,
-        backgroundColor: "transparent"
-    }
 })
 export default ProductDetails
