@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
         borderColor: "#a1bcc0",
         borderRadius: 8,
         backgroundColor: '#FFFFFF',
+        color: 'black'
     },
     productMainView: {
         flex: 1

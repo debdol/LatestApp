@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "525142142043",
+    "firebase_url": "https://demoapi-c6040-default-rtdb.firebaseio.com",
+    "project_id": "demoapi-c6040",
+    "storage_bucket": "demoapi-c6040.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:525142142043:android:556648e4be085e775e637e",
+        "android_client_info": {
+          "package_name": "com.latestapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC12WMe0SGgFmfxEJ3XhVEZVHSUrQXsM5Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

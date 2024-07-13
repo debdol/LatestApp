@@ -3,14 +3,11 @@ import React, { useEffect } from 'react'
 import * as Animatable from 'react-native-animatable';
 
 const ProductList = ({ item, index, navigation }) => {
-    // useEffect(() => {
-    //     console.log(item);
-    // }, [item]);
 
     return (
         <Animatable.View animation={'fadeInUp'} duration={2000} style={styles.productBox}>
             <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', { details: item })} style={styles.btn}>
-                <Image source={{ uri: `${item.image2}?${new Date().getTime()}` }} style={styles.productImage} />
+                <Image source={{ uri: `${item.image1}?${new Date().getTime()}` }} style={styles.productImage} />
                 <View style={styles.cardTextView}>
                     <Text style={styles.title}>{item.title}</Text>
                     <View style={styles.priceMainView}>

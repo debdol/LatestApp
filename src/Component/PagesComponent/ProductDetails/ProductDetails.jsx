@@ -46,72 +46,19 @@ const ProductDetails = ({ navigation, route }) => {
                 <Text></Text>
             </LinearGradient>
             <View style={styles.body}>
-                {/* <View style={styles.sliderMainView}>
-                    <FlatList
-                        contentContainerStyle={{ alignItems: "center" ,borderWidth:1}}
-                        data={productImages}
-                        horizontal
-                        pagingEnabled
-                        showsHorizontalScrollIndicator={false}
-                        keyExtractor={(item, index) => index}
-                        onScroll={(e) => {
-                            const contentOffsetX = e.nativeEvent.contentOffset.x;
-                            setCurrentIndex((contentOffsetX / width).toFixed(0));
-                        }}
-                        renderItem={({ item, index }) => {
-                            return (
-                                <TouchableOpacity style={styles.sliderBtn} disabled={true}>
-                                    <Image source={{ uri: item }} style={[styles.sliderBtn, styles.imageStyle]} />
-                                </TouchableOpacity>
-                            )
-                        }}
-                    />
-
-                    <View style={styles.sliderDotMainView}>
-                        {
-                            productImages.map((item, index) => {
-                                return (
-                                    <View style={{
-                                        width: 8,
-                                        height: 8,
-                                        borderRadius: 4,
-                                        backgroundColor: currentIndex == index ? "green" : "grey",
-                                    }} key={index}>
-                                    </View>
-                                )
-                            })
-                        }
-                    </View>
-                </View> */}
                 <View style={styles.sliderMainView}>
                     <Swiper
-                        infinite
+                        infinite={true}
                         cards={productImages}
-                        cardStyle={{
-                            width: '100%',  // 80% of the screen width
-                            height: '100%',  // 60% of the screen height
-                            borderRadius: 10,
-                            overflow: 'hidden',
-                            borderWidth: 2,
-                            borderColor: "white",
-                            position: 'absolute',
-                            top: 0,
-                            left: 0
-                        }}
-                        renderCard={(card) => {
+                        cardStyle={styles.cardStyle}
+                        renderCard={(cardData, cardIndex) => {
                             return (
-                                <Image source={{ uri: `${card}?${new Date().getTime()}` }} style={[styles.imageStyle]} PlaceholderContent={<ActivityIndicator />} />
+                                <Image source={{ uri: `${cardData}` }} style={[styles.imageStyle]} />
                             )
                         }}
-                        // onSwiped={(cardIndex) => { console.log(cardIndex) }}
-                        // onSwipedAll={() => { console.log('onSwipedAll') }}
                         cardIndex={0}
                         backgroundColor={"White"}
-                        containerStyle={{
-                            width: width * 0.9,
-                            height: '100%',
-                            width: "100%",
-                        }}
+                        containerStyle={styles.containerStyle}
                         stackSize={3}>
                     </Swiper>
                 </View>
@@ -208,14 +155,17 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
 
-    // sliderBtn: {
-    //     height: '100%',
-    //     width: '100%',
-    //     // padding:10,
-    //     justifyContent: 'center',
-    //     // alignItems: 'center',
-    //     // borderRadius: 9,
-    // },
+    cardStyle: {
+        width: '100%',  // 80% of the screen width
+        height: '100%',  // 60% of the screen height
+        borderRadius: 10,
+        overflow: 'hidden',
+        borderWidth: 2,
+        borderColor: "white",
+        position: 'absolute',
+        top: 0,
+        left: 0
+    },
 
     imageStyle: {
         borderRadius: 9,
@@ -224,13 +174,11 @@ const styles = StyleSheet.create({
         resizeMode: "cover"
     },
 
-    // sliderDotMainView: {
-    //     flexDirection: "row",
-    //     width: width,
-    //     justifyContent: "center",
-    //     alignItems: "center",
-    //     gap: 10,
-    // },
+    containerStyle: {
+        width: width * 0.9,
+        height: '100%',
+        width: "100%",
+    },
 
     sliderBottiomView: {
         height: "45%",
